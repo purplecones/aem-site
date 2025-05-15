@@ -14,18 +14,15 @@ export default async function decorate(block) {
   // Clear the block
   block.textContent = '';
 
-  // Dynamically import React, ReactDOM, and FooterApp
-  const [React, ReactDOM, FooterApp] = await Promise.all([
-    import('react'),
-    import('react-dom/client.js'),
-    import('../../dist/blocks/footer/FooterApp.js'),
-  ]);
+  // Dynamically import your FooterApp (which is now pure JS)
+  const { default: FooterApp } = await import('./FooterApp.js');
 
   // Create a container for React
   const reactRoot = document.createElement('div');
   block.append(reactRoot);
 
-  // Render the React component, passing the fragment as a prop
-  const root = ReactDOM.createRoot(reactRoot);
-  root.render(React.createElement(FooterApp.default, { fragment }));
+  // Render the React component using the global React and ReactDOM from CDN
+  ReactDOM.createRoot(reactRoot).render(
+    React.createElement(FooterApp, { fragment })
+  );
 }
