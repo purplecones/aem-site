@@ -11,18 +11,10 @@ export default async function decorate(block) {
   const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
   const fragment = await loadFragment(footerPath);
 
-  // Clear the block
+  // decorate footer DOM
   block.textContent = '';
+  const footer = document.createElement('div');
+  while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 
-  // Dynamically import your FooterApp (which is now pure JS)
-  const { default: FooterApp } = await import('./FooterApp.js');
-
-  // Create a container for React
-  const reactRoot = document.createElement('div');
-  block.append(reactRoot);
-
-  // Render the React component using the global React and ReactDOM from CDN
-  ReactDOM.createRoot(reactRoot).render(
-    React.createElement(FooterApp, { fragment })
-  );
+  block.append(footer);
 }
