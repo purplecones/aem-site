@@ -18,7 +18,7 @@ export default async function decorate(block) {
   const [React, ReactDOM, FooterApp] = await Promise.all([
     import('react'),
     import('react-dom/client.js'),
-    import('./FooterApp.jsx'),
+    import('../../dist/blocks/footer/FooterApp.js'),
   ]);
 
   // Create a container for React
